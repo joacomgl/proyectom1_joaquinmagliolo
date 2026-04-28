@@ -4,28 +4,7 @@ const selectCantidad = document.getElementById("cantidad");
 const hslBtn = document.getElementById("hsl-btn");
 const hexBtn = document.getElementById("hex-btn");
 let formatoActual = "";
-
-
-
-//Activacion botones
-hslBtn.addEventListener("click", function () {
-  formatoActual = "hsl";
-
-  hslBtn.classList.add("activo");
-  hexBtn.classList.remove("activo");
-
-  renderizarPaleta();
-});
-
-hexBtn.addEventListener("click", function () {
-  formatoActual = "hex";
-
-  hexBtn.classList.add("activo");
-  hslBtn.classList.remove("activo");
-
-  renderizarPaleta();
-});
-
+let paletaActual = []; // aca se guardan los colores
 
 // Colores en hsl
 function generarColorHSL() {
@@ -50,34 +29,55 @@ function generarColorHex() {
 
 // Paleta segun cantidad
 function generarPaleta(cantidad) {
-  const colores = [];
+  paletaActual = []; // limpia la paleta anterior
 
   for (let i = 0; i < cantidad; i++) {
-    colores.push(generarColorHSL());
+    paletaActual.push(generarColorHSL()); // siempre guarda HSL
   }
-  return colores;
 }
 
-// Paleta en pantalla
-function renderizarPaleta() {
-  const cantidad = Number(selectCantidad.value);
-  const colores = generarPaleta(cantidad);
-
+function mostrarPaleta() {
   paletteContainer.innerHTML = "";
 
-  colores.forEach(function(color) {
+  paletaActual.forEach(function(colorHSL) {
     const div = document.createElement("div");
     div.classList.add("color-box");
-    div.style.backgroundColor = color;
-    div.textContent = color;
+    div.style.backgroundColor = colorHSL;
+
+    if (formatoActual === "hex") {
+      div.textContent = generarColorHex(); // muestra formato hex
+    } else {
+      div.textContent = colorHSL; // muestra formato hsl
+    }
 
     paletteContainer.appendChild(div);
   });
 }
 
-// Boton y lista
+function renderizarPaleta() {
+  if (formatoActual === "") return; // si no eligió formato, no hace nada
+
+  const cantidad = Number(selectCantidad.value);
+  generarPaleta(cantidad);
+  mostrarPaleta();
+}
+
+// Botones y lista 
 button.addEventListener("click", renderizarPaleta);
 selectCantidad.addEventListener("change", renderizarPaleta);
 
-// Primera carga
-renderizarPaleta();
+//Alternador paleta hsl
+hslBtn.addEventListener("click", function () {
+  formatoActual = "hsl";
+  hslBtn.classList.add("activo");
+  hexBtn.classList.remove("activo");
+  paletteContainer.innerHTML = ""; // ← limpia la pantalla
+});
+
+//Alternador paleta hex
+hexBtn.addEventListener("click", function () {
+  formatoActual = "hex";
+  hexBtn.classList.add("activo");
+  hslBtn.classList.remove("activo");
+  paletteContainer.innerHTML = ""; // ← limpia la pantalla
+});
