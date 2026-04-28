@@ -1,11 +1,38 @@
 body {
   font-family: sans-serif;
   text-align: center;
+  margin: 0;
+  padding: 0;
 }
 
+header {
+  padding: 16px;
+}
+
+/* Instructivo */
+#instructivo {
+  max-width: 400px;
+  margin: 20px auto;
+  padding: 16px 24px;
+  background-color: #f5f5f5;
+  border-radius: 10px;
+  text-align: left;
+}
+
+#instructivo h2 {
+  text-align: center;
+  margin-top: 0;
+}
+
+#instructivo ol {
+  padding-left: 20px;
+  line-height: 2;
+}
+
+/* Paleta */
 #palette {
   display: flex;
-  height: 300px;
+  min-height: 300px;
 }
 
 .color-box {
@@ -13,26 +40,95 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
+  flex-direction: column;
   color: white;
   font-weight: bold;
+  cursor: pointer;
+  position: relative;
 }
 
-menu {
+/* Controles */
+.controles {
   display: flex;
-  list-style: none;
-  padding: 0;
-  width: 400px;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  padding: 16px;
+  flex-wrap: wrap;
 }
 
-li {
-  flex-grow: 1;
+.formato-btns {
+  display: flex;
+}
+
+.formato-btns button {
+  width: 80px;
 }
 
 button {
-  width: 100%;
+  cursor: pointer;
+  padding: 6px 12px;
 }
 
 .activo {
   background-color: black;
   color: white;
+}
+
+/* Candado */
+.candado-btn {
+  position: absolute;
+  bottom: 8px;
+  right: 8px;
+  background: none;
+  border: none;
+  font-size: 1.2rem;
+  cursor: pointer;
+}
+
+/* Aside - paletas guardadas */
+aside {
+  padding: 16px;
+  margin-top: 16px;
+}
+
+.paleta-guardada {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  margin-bottom: 12px;
+  flex-wrap: wrap;
+}
+
+.color-mini {
+  width: 60px;
+  height: 40px;
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-size: 0.55rem;
+  font-weight: bold;
+}
+
+/* Toast */
+#toast {
+  position: fixed;
+  bottom: 24px;
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: #333;
+  color: white;
+  padding: 10px 20px;
+  border-radius: 8px;
+  font-size: 0.9rem;
+  opacity: 0;
+  transition: opacity 0.3s;
+  pointer-events: none;
+}
+
+#toast.visible {
+  opacity: 1;
 }

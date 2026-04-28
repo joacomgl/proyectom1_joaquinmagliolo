@@ -5,6 +5,8 @@ const hslBtn = document.getElementById("hsl-btn");
 const hexBtn = document.getElementById("hex-btn");
 let formatoActual = "";
 let paletaActual = []; // aca se guardan los colores
+const guardarBtn = document.getElementById("guardar-btn");
+const paletasGuardadas = document.getElementById("paletas-guardadas");
 
 // Colores en hsl
 function generarColorHSL() {
@@ -37,8 +39,12 @@ function generarPaleta(cantidad) {
     if (viejos[i] && viejos[i].bloqueado) {
       paletaActual.push(viejos[i]); // conserva color Y estado
     } else {
-      const hex = generarColorHex(); // guarda el HEX fijo acá
-      paletaActual.push({ color: hex, bloqueado: false }); // fondo y texto son el mismo HEX
+      if (formatoActual === "hex") {
+        const hex = generarColorHex(); // guarda el HEX fijo acá
+        paletaActual.push({ color: hex, bloqueado: false }); // fondo y texto son el mismo HEX
+      } else {
+        paletaActual.push({ color: generarColorHSL(), bloqueado: false });
+      }
     }
   }
 }
@@ -50,6 +56,7 @@ function mostrarPaleta() {
     const div = document.createElement("div");
     div.classList.add("color-box");
     div.style.backgroundColor = item.color; // funciona con HSL y HEX
+    div.title = "Copiar al portapapeles";
 
     // Texto del color
     const span = document.createElement("span"); // primero se crea
@@ -60,6 +67,7 @@ function mostrarPaleta() {
     const candado = document.createElement("button");
     candado.classList.add("candado-btn");
     candado.textContent = item.bloqueado ? "🔒" : "🔓";
+    candado.title = "Bloquear/desbloquear color";
     
     // Clic en candado — bloquea/desbloquea
     candado.addEventListener("click", function(e) {
@@ -82,9 +90,16 @@ function mostrarPaleta() {
     paletteContainer.appendChild(div);
   });
 }
+
 //Paleta en pantalla
 function renderizarPaleta() {
-  if (formatoActual === "") return; // si no eligió formato, no hace nada
+  if (formatoActual === "") return;
+
+  // Oculta el instructivo la primera vez
+  const instructivo = document.getElementById("instructivo");
+  if (instructivo) {
+    instructivo.style.display = "none";
+  }
 
   const cantidad = Number(selectCantidad.value);
   generarPaleta(cantidad);
@@ -134,3 +149,61 @@ hexBtn.addEventListener("click", function () {
   paletaActual = []; // resetea todo al cambiar formato
   paletteContainer.innerHTML = ""; // limpia la pantalla
 });
+
+// Guarda la paleta actual en localStorage
+function guardarPaleta() {
+  if (paletaActual.length === 0) return; // si no hay paleta, no hace nada
+
+  const guardadas = JSON.parse(localStorage.getItem("paletas")) || [];
+
+  if (guardadas.length >= 2) {
+    alert("Ya tenés 2 paletas guardadas. Borrá una para guardar otra.");
+    return;
+  }
+
+  guardadas.push({
+    colores: paletaActual,
+    formato: formatoActual
+  });
+
+  localStorage.setItem("paletas", JSON.stringify(guardadas));
+  mostrarPaletasGuardadas();
+}
+
+// Muestra las paletas guardadas en pantalla
+function mostrarPaletasGuardadas() {
+  const guardadas = JSON.parse(localStorage.getItem("paletas")) || [];
+  paletasGuardadas.innerHTML = "";
+
+  guardadas.forEach(function(paleta, index) {
+    const contenedor = document.createElement("div");
+    contenedor.classList.add("paleta-guardada");
+
+    // Muestra los colores en miniatura
+    paleta.colores.forEach(function(item) {
+      const mini = document.createElement("div");
+      mini.classList.add("color-mini");
+      mini.style.backgroundColor = item.color;
+      mini.textContent = item.color;
+      contenedor.appendChild(mini);
+    });
+
+    // Botón borrar
+    const borrarBtn = document.createElement("button");
+    borrarBtn.textContent = "Borrar";
+    borrarBtn.title = "Borrar paleta guardada";
+    borrarBtn.addEventListener("click", function() {
+      guardadas.splice(index, 1); // quita esta paleta del array
+      localStorage.setItem("paletas", JSON.stringify(guardadas));
+      mostrarPaletasGuardadas();
+    });
+
+    contenedor.appendChild(borrarBtn);
+    paletasGuardadas.appendChild(contenedor);
+  });
+}
+
+guardarBtn.addEventListener("click", guardarPaleta);
+
+// Carga las paletas guardadas al abrir la página
+mostrarPaletasGuardadas();

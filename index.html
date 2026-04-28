@@ -10,29 +10,44 @@
     <h1>Colorfly Palette Generator</h1>
   </header>
 
-  <main>
-    <section id="palette">
-      <!-- Acá van los colores -->
-    </section>
-
-    <!-- Boton generador de paletas -->
+<main>
+  <!-- Controles primero -->
+  <div class="controles">
     <button id="generate-btn">Generar Paleta</button>
 
-      <!-- Lista desplegable -->
     <label for="cantidad">Cantidad de colores:</label>
-
     <select id="cantidad">
-      <option value="6">6</option>
+      <option value="6" selected>6</option>
       <option value="8">8</option>
       <option value="9">9</option>
     </select>
-    
-    <!-- Botones para hsl y hex -->
-    <menu>
-      <li><button id="hsl-btn">hsl</button></li>
-      <li><button id="hex-btn">hex</button></li>
-    </menu>
-  </main>
+
+    <div class="formato-btns">
+      <button id="hsl-btn">hsl</button>
+      <button id="hex-btn">hex</button>
+    </div>
+  </div>
+
+  <!-- Paleta -->
+  <section id="palette">
+    <div id="instructivo">
+      <h2>¿Cómo usar Colorfly?</h2>
+      <ol>
+        <li>Elegí un formato: <strong>HSL</strong> o <strong>HEX</strong></li>
+        <li>Elegí la cantidad de colores</li>
+        <li>Apretá <strong>Generar Paleta</strong></li>
+        <li>Hacé clic en un color para copiarlo</li>
+        <li>Usá el 🔓 para bloquear colores que te gusten</li>
+        <li>Guardá hasta 2 paletas favoritas</li>
+      </ol>
+    </div>
+</section>
+</main>
+  <!-- Paletas guardadas -->
+  <aside id="paletas-guardadas"></aside>
+
+  <!-- Toast -->
+  <div id="toast"></div>
 
   <script src="js/index.js"></script>
 </body>
