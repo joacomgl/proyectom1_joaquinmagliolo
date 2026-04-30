@@ -21,10 +21,7 @@
 ###
 
 <p align="left">
-  [CAPTURA — pantalla de inicio con el instructivo visible]<br>
-  [CAPTURA — paleta HSL generada con tarjetas]<br>
-  [CAPTURA — paleta HEX generada con tarjetas]<br>
-  [CAPTURA — paletas guardadas en el aside]
+  <img width="1920" height="870" alt="Image" src="https://github.com/user-attachments/assets/10770ed6-75b3-4c12-98bf-906e8c084005" />
 </p>
 
 ###
